@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRIMGHAR - Modern Barber Booking Experience</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    darkMode: 'class'
+  }
+  </script>
+</head>
+<body class="bg-gray-50 antialiased" x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-blue-600 focus:text-white">
+    Skip to main content
+  </a>
+
+  <!-- Sticky Header with Mobile Menu -->
+  <header class="fixed w-full bg-white/95 backdrop-blur-sm shadow-md z-50 transition-colors dark:bg-gray-900" x-data="{ isOpen: false }">
+    <div class="container mx-auto px-4">
+      <nav class="flex items-center justify-between h-16 md:h-20">
+        <!-- Logo -->
+        <a href="#" class="flex items-center space-x-2" aria-label="TRIMGHAR Home">
+          <span class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text dark:from-blue-400 dark:to-blue-600">
+            TRIMGHAR
+          </span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors dark:text-gray-300 dark:hover:text-blue-400">Home</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-600 transition-colors dark:text-gray-300 dark:hover:text-blue-400">About</a>
+          <a href="#how" class="text-gray-700 hover:text-blue-600 transition-colors dark:text-gray-300 dark:hover:text-blue-400">How It Works</a>
+          <a href="#features" class="text-gray-700 hover:text-blue-600 transition-colors dark:text-gray-300 dark:hover:text-blue-400">Features</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-600 transition-colors dark:text-gray-300 dark:hover:text-blue-400">Contact</a>
+          
+          <!-- Dark Mode Toggle -->
+          <button @click="darkMode = !darkMode" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle Dark Mode">
+            <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <svg x-show="darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button @click="isOpen = !isOpen" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path :class="{'hidden': isOpen, 'inline-flex': !isOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path :class="{'hidden': !isOpen, 'inline-flex': isOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile Navigation -->
+      <div class="md:hidden" x-show="isOpen" @click.away="isOpen = false"
+           x-transition:enter="transition ease-out duration-200"
+           x-transition:enter-start="opacity-0 transform -translate-y-2"
+           x-transition:enter-end="opacity-100 transform translate-y-0"
+           x-transition:leave="transition ease-in duration-150"
+           x-transition:leave-start="opacity-100 transform translate-y-0"
+           x-transition:leave-end="opacity-0 transform -translate-y-2">
+        <div class="py-2 space-y-1">
+          <a href="#home" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-300 dark:hover:bg-gray-800">Home</a>
+          <a href="#about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-300 dark:hover:bg-gray-800">About</a>
+          <a href="#how" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-300 dark:hover:bg-gray-800">How It Works</a>
+          <a href="#features" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-300 dark:hover:bg-gray-800">Features</a>
+          <a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg dark:text-gray-300 dark:hover:bg-gray-800">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="min-h-screen flex items-center pt-16 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+        <div class="md:w-1/2 text-center md:text-left">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 dark:text-white">
+            Your Perfect Cut Is Just A Click Away
+          </h1>
+          <p class="text-xl text-gray-600 mb-8 leading-relaxed dark:text-gray-300">
+            Experience hassle-free barber appointments with TRIMGHAR. Book, manage, and enjoy professional grooming services.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <a href="user.html" class="group inline-flex items-center justify-center px-8 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg">
+              Book Now
+              <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+            <a href="barber-dashboard.html" class="inline-flex items-center justify-center px-8 py-3 text-lg font-medium text-blue-600 bg-white border-2 border-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-200 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-gray-700">
+              BarberDasboard
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2 relative">
+          <img src="barber.avif" alt="Professional barber service" class="rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-300" />
+          <div class="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+            <p class="text-sm font-medium text-gray-900 dark:text-white">Trusted by</p>
+            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">1000+ Barbers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section (New) -->
+  <section id="about" class="py-20 bg-white dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8 dark:text-white">About TRIMGHAR</h2>
+        <div class="prose prose-lg max-w-none dark:prose-invert">
+          <p class="text-gray-600 dark:text-gray-300 mb-6">
+            TRIMGHAR is revolutionizing the way people book their barber appointments. Founded in 2024, we're on a mission to connect skilled barbers with clients through a seamless, digital platform.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+            <div class="bg-blue-50 dark:bg-gray-700 p-6 rounded-lg">
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Our Mission</h3>
+              <p class="text-gray-600 dark:text-gray-300">To provide a hassle-free booking experience while empowering barbers to grow their business digitally.</p>
+            </div>
+            <div class="bg-blue-50 dark:bg-gray-700 p-6 rounded-lg">
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Our Vision</h3>
+              <p class="text-gray-600 dark:text-gray-300">To become the leading platform for barber services, setting new standards in digital booking and customer satisfaction.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+       <!-- How It Works Section (New) -->
+  <section id="how" class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12 dark:text-white">How It Works</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="relative">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mb-4">1</div>
+            <h3 class="text-xl font-semibold mb-4 dark:text-white">Browse Barbers</h3>
+            <p class="text-gray-600 dark:text-gray-300">Explore profiles and reviews of skilled barbers in your area.</p>
+          </div>
+          <div class="hidden md:block absolute top-1/2 left-full w-16 h-0.5 bg-blue-600 -translate-y-1/2"></div>
+        </div>
+        <div class="relative">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mb-4">2</div>
+            <h3 class="text-xl font-semibold mb-4 dark:text-white">Choose Service</h3>
+            <p class="text-gray-600 dark:text-gray-300">Select from a variety of grooming services and packages.</p>
+          </div>
+          <div class="hidden md:block absolute top-1/2 left-full w-16 h-0.5 bg-blue-600 -translate-y-1/2"></div>
+        </div>
+        <div class="relative">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mb-4">3</div>
+            <h3 class="text-xl font-semibold mb-4 dark:text-white">Book Appointment</h3>
+            <p class="text-gray-600 dark:text-gray-300">Choose your preferred time slot and confirm booking.</p>
+          </div>
+          <div class="hidden md:block absolute top-1/2 left-full w-16 h-0.5 bg-blue-600 -translate-y-1/2"></div>
+        </div>
+        <div>
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mb-4">4</div>
+            <h3 class="text-xl font-semibold mb-4 dark:text-white">Get Your Cut</h3>
+            <p class="text-gray-600 dark:text-gray-300">Enjoy your professional grooming experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Features Grid -->
+  <section id="features" class="py-20 bg-white dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12 dark:text-white">
+        Why Choose TRIMGHAR?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="group">
+          <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+            <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+              <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Smart Scheduling</h3>
+            <p class="text-gray-600 dark:text-gray-300">Intelligent booking system that helps you find the perfect time slot.</p>
+          </div>
+        </div>
+        <div class="group">
+            <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+              <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Expert Barbers</h3>
+              <p class="text-gray-600 dark:text-gray-300">Access to verified, professional barbers with proven experience.</p>
+            </div>
+          </div>
+  
+          <div class="group">
+            <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+              <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Easy Management</h3>
+              <p class="text-gray-600 dark:text-gray-300">Manage your appointments, reminders, and preferences effortlessly.</p>
+            </div>
+          </div>
+  
+          <div class="group">
+            <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+              <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Secure Payments</h3>
+              <p class="text-gray-600 dark:text-gray-300">Safe and convenient payment options for all your bookings.</p>
+            </div>
+          </div>
+  
+          <div class="group">
+            <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+              <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Loyalty Rewards</h3>
+              <p class="text-gray-600 dark:text-gray-300">Earn points and get exclusive discounts on regular visits.</p>
+            </div>
+          </div>
+  
+          <div class="group">
+            <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-2">
+              <div class="text-blue-600 dark:text-blue-400 mb-4 transform group-hover:scale-110 transition-transform">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Reviews & Ratings</h3>
+              <p class="text-gray-600 dark:text-gray-300">Transparent feedback system to help you choose the best barbers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Contact Form -->
+  <section id="contact" class="py-20 bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+      <div class="max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12 dark:text-white">
+          Get in Touch
+        </h2>
+        <form class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          <div class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Full Name
+              </label>
+              <input type="text" id="name" name="name" required
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                     placeholder="Enter your name" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Email Address
+              </label>
+              <input type="email" id="email" name="email" required
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                     placeholder="Enter your email" />
+            </div>
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Message
+              </label>
+              <textarea id="message" name="message" rows="4" required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        placeholder="Enter your message"></textarea>
+            </div>
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">TRIMGHAR</h3>
+          <p class="text-gray-400">Modern barber booking platform for the digital age.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors"><li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+            <li><a href="#how" class="text-gray-400 hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center text-gray-400">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              +1 (555) 123-4567
+            </li>
+            <li class="flex items-center text-gray-400">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              contact@trimghar.com
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.77,7.46H14.5v-1.9c0-.9.6-1.1,1-1.1h3V.5h-4.33C10.24.5,9.5,3.44,9.5,5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4Z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+        <p class="text-gray-400">&copy; 2025 TRIMGHAR. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" 
+          class="fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors hidden"
+          aria-label="Back to top">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+
+  <!-- Smooth Scroll and Back to Top Button Script -->
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Back to top button
+    const backToTopButton = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.remove('hidden');
+      } else {
+        backToTopButton.classList.add('hidden');
+      }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+</body>
+</html>
